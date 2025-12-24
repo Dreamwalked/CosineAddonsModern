@@ -1,14 +1,19 @@
 {
-	"required": true,
-	"package": "com.dreamwalked.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"ExampleMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
-	}
+  "required": true,
+  "package": "com.dreamwalked.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ClientPlayerInteractionManagerMixin",
+    "LivingEntityAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "ClientPlayerInteractionManagerMixin",
+    "MinecraftClientAccessor"
+  ]
 }

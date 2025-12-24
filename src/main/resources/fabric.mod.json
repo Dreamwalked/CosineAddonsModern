@@ -20,7 +20,13 @@
 				"value": "com.dreamwalked.CosineAddonsModern",
 				"adapter": "kotlin"
 			}
-		]
+		],
+      "client": [
+        {
+          "value": "com.dreamwalked.CosineClient",
+          "adapter": "kotlin"
+        }
+      ]
 	},
 	"mixins": [
 		"cosine-addons-modern.mixins.json"
