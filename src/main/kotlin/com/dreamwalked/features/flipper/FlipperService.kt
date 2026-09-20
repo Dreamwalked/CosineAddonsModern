@@ -33,7 +33,9 @@ object FlipperService {
     private var pendingSince = 0L
     private var lastContainerId = -1
     private var lastClickAt = 0L
-    private var inspectedContainerId = -1
+    private var partyInfoContainerId = -1
+    private var printedSeller = false
+    private var printedBuyer = false
     private var pricedContainerId = -1
     private var lastPriceTarget: Double? = null
     private var activeScreen: AbstractContainerScreen<*>? = null
@@ -49,6 +51,9 @@ object FlipperService {
         ScreenEvents.AFTER_INIT.register { _, screen, _, _ ->
             if (screen is AbstractContainerScreen<*>) {
                 activeScreen = screen
+                partyInfoContainerId = -1
+                printedSeller = false
+                printedBuyer = false
                 ScreenEvents.remove(screen).register {
                     if (activeScreen === screen) {
                         activeScreen = null
@@ -283,7 +288,9 @@ object FlipperService {
         }
         val screen = activeScreen ?: run {
             lastContainerId = -1
-            inspectedContainerId = -1
+            partyInfoContainerId = -1
+            printedSeller = false
+            printedBuyer = false
             return
         }
         val title = screen.title.string
@@ -351,12 +358,31 @@ object FlipperService {
     }
 
     private fun inspectAuction(containerId: Int, item: net.minecraft.world.item.ItemStack?) {
-        if (!FlipperConfig.preSniper || inspectedContainerId == containerId || item == null || item.isEmpty) return
-        inspectedContainerId = containerId
+        if (!FlipperConfig.preSniper || item == null || item.isEmpty) return
+        if (partyInfoContainerId != containerId) {
+            partyInfoContainerId = containerId
+            printedSeller = false
+            printedBuyer = false
+        }
         val lore = itemLore(item).joinToString(" ")
-        fun find(label: String): String? = Regex("$label: (?:\\[[^]]+] )?(\\w+)").find(lore)?.groupValues?.get(1)
-        find("Seller")?.let { sendAuctionParty("§2Seller's AH: §a$it", it) }
-        find("Buyer")?.let { sendAuctionParty("§eAuction bought by $it", it) }
+        fun find(label: String): String? = Regex("$label: (?:\\[[^]]+] )?(\\w+)")
+            .find(lore)
+            ?.groupValues
+            ?.get(1)
+            ?.takeUnless { it.startsWith("Refreshing", ignoreCase = true) }
+
+        if (!printedSeller) {
+            find("Seller")?.let {
+                sendAuctionParty("§2Seller's AH: §a$it", it)
+                printedSeller = true
+            }
+        }
+        if (!printedBuyer) {
+            find("Buyer")?.let {
+                sendAuctionParty("§eAuction bought by $it", it)
+                printedBuyer = true
+            }
+        }
     }
 
     private fun sendAuctionParty(label: String, player: String) {
