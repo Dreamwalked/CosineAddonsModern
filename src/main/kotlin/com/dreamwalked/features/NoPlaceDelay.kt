@@ -1,7 +1,7 @@
 package com.dreamwalked.features
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
-import net.minecraft.item.BlockItem
+import net.minecraft.world.item.BlockItem
 import com.dreamwalked.mixin.MinecraftClientAccessor
 import com.dreamwalked.utils.Config
 
@@ -12,7 +12,7 @@ object NoPlaceDelay {
             if (!Config.isNoPlaceDelay()) return@register
             val player = client.player ?: return@register
 
-            val stack = player.mainHandStack
+            val stack = player.mainHandItem
             if (stack.item !is BlockItem) return@register
 
             val accessor = client as MinecraftClientAccessor

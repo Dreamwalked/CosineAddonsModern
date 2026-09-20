@@ -10,6 +10,21 @@ object Config {
     @Volatile
     var noBreakDelay: Boolean = false
 
+    @Volatile
+    var cosineStatus: Boolean = false
+
+    @Volatile
+    var showDistance: Boolean = true
+
+    @Volatile
+    var showPosition: Boolean = false
+
+    @Volatile
+    var showArmor: Boolean = false
+
+    @Volatile
+    var customCape: String = "default"
+
     @JvmStatic
     fun isNoJumpDelay(): Boolean = noJumpDelay
 
@@ -18,4 +33,7 @@ object Config {
 
     @JvmStatic
     fun isNoBreakDelay(): Boolean = noBreakDelay
+
+    @JvmStatic
+    fun isCosineStatus(): Boolean = cosineStatus
 }

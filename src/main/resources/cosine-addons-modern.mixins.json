@@ -1,9 +1,8 @@
 {
   "required": true,
   "package": "com.dreamwalked.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "ClientPlayerInteractionManagerMixin",
     "LivingEntityAccessor"
   ],
   "injectors": {
@@ -13,6 +12,7 @@
     "requireAnnotations": true
   },
   "client": [
+    "AbstractClientPlayerMixin",
     "ClientPlayerInteractionManagerMixin",
     "MinecraftClientAccessor"
   ]
