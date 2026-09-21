@@ -8,8 +8,8 @@
 		"Me!"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/Dreamwalked/CosineAddonsModern",
+		"sources": "https://github.com/Dreamwalked/CosineAddonsModern"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/cosine-addons-modern/icon.png",

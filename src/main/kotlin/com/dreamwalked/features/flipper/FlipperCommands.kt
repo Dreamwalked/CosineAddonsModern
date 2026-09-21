@@ -21,6 +21,7 @@ object FlipperCommands {
                 ChatUtils.modMessage("/cf minprofit1|minprofit2 <coins> <percent>")
                 ChatUtils.modMessage("/cf maxautoopencost <coins>; /cf delay|bedspamdelay <ms>")
                 ChatUtils.modMessage("/cf timerx|timery <pixels>")
+                ChatUtils.modMessage("/cf flipsound <pling|levelup|orb|chime|allay|off>")
                 1
             })
             .then(literal("status").executes { FlipperService.status(); 1 })
@@ -28,6 +29,15 @@ object FlipperCommands {
             .then(literal("ping").executes { FlipperService.ping(); 1 })
             .then(websocketSetting("websocket"))
             .then(websocketSetting("websocketurl"))
+            .then(literal("flipsound")
+                .executes {
+                    ChatUtils.modMessage("Flip sound is ${FlipperConfig.flipSound}. Options: pling, levelup, orb, chime, allay, off")
+                    1
+                }
+                .then(argument("sound", StringArgumentType.word()).executes { context ->
+                    FlipperService.setFlipSound(StringArgumentType.getString(context, "sound"))
+                    1
+                }))
             .then(literal("connect").executes { FlipperService.connect(); 1 })
             .then(literal("reconnect").executes { FlipperService.reconnect(); 1 })
             .then(literal("disconnect").executes { FlipperService.disconnect(); 1 })

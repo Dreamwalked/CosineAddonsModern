@@ -12,6 +12,7 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.ClickEvent
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.HoverEvent
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.world.inventory.ContainerInput
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Items
@@ -43,6 +44,8 @@ object FlipperService {
 
     val connected: Boolean
         get() = socket != null
+
+    private val soundOptions = setOf("pling", "levelup", "orb", "chime", "allay", "off")
 
     fun init() {
         FlipperConfig.load()
@@ -133,6 +136,18 @@ object FlipperService {
         reconnect()
     }
 
+    fun setFlipSound(value: String) {
+        val normalized = value.lowercase()
+        if (normalized !in soundOptions) {
+            ChatUtils.modMessage("§cUnknown sound. Choose: ${soundOptions.joinToString(", ")}")
+            return
+        }
+        FlipperConfig.flipSound = normalized
+        FlipperConfig.save()
+        ChatUtils.modMessage("Flip sound set to §e$normalized")
+        playFlipSound()
+    }
+
     fun status() {
         ChatUtils.modMessage("Flipper: ${if (connected) "§aconnected" else "§cdisconnected"}§f, " +
             "auto-open ${onOff(FlipperConfig.autoOpen)}, auto-buy ${onOff(FlipperConfig.autoBuy)}")
@@ -151,6 +166,7 @@ object FlipperService {
         ChatUtils.modMessage("autoConnect=${FlipperConfig.autoConnect}, autoOpen=${FlipperConfig.autoOpen}, autoBuy=${FlipperConfig.autoBuy}")
         ChatUtils.modMessage("bedTiming=${FlipperConfig.bedTiming}, bedSpamDelay=${FlipperConfig.bedSpamDelayMs}ms")
         ChatUtils.modMessage("flipTimer=${FlipperConfig.flipTimer}, timerPosition=${FlipperConfig.flipTimerX},${FlipperConfig.flipTimerY}")
+        ChatUtils.modMessage("flipSound=${FlipperConfig.flipSound}")
         ChatUtils.modMessage("safety=${FlipperConfig.safety}, preSniper=${FlipperConfig.preSniper}, relistPricing=${FlipperConfig.relistPricing}")
         ChatUtils.modMessage("minProfit1=${FlipperUtils.formatNumber(FlipperConfig.minProfit1)} @ ${FlipperConfig.minProfitPercent1}%")
         ChatUtils.modMessage("minProfit2=${FlipperUtils.formatNumber(FlipperConfig.minProfit2)} @ ${FlipperConfig.minProfitPercent2}%")
@@ -264,6 +280,7 @@ object FlipperService {
                     .withHoverEvent(HoverEvent.ShowText(Component.literal("Open this auction")))
             }
         client.player?.sendSystemMessage(message)
+        playFlipSound()
 
         if (FlipperConfig.autoOpen && pendingFlip == null && flip.startingBid <= FlipperConfig.maxAutoOpenCost) {
             pendingFlip = flip
@@ -280,6 +297,19 @@ object FlipperService {
     private fun rememberAuction(id: String) {
         seenAuctions += id
         if (seenAuctions.size > 512) seenAuctions.remove(seenAuctions.first())
+    }
+
+    private fun playFlipSound() {
+        val player = Minecraft.getInstance().player ?: return
+        val sound = when (FlipperConfig.flipSound) {
+            "pling" -> SoundEvents.NOTE_BLOCK_PLING.value()
+            "levelup" -> SoundEvents.PLAYER_LEVELUP
+            "orb" -> SoundEvents.EXPERIENCE_ORB_PICKUP
+            "chime" -> SoundEvents.AMETHYST_BLOCK_CHIME
+            "allay" -> SoundEvents.ALLAY_ITEM_GIVEN
+            else -> return
+        }
+        player.playSound(sound, 1.0f, 1.0f)
     }
 
     private fun tick(client: Minecraft) {

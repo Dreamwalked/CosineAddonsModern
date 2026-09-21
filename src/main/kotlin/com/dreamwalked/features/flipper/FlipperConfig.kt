@@ -22,6 +22,7 @@ object FlipperConfig {
     var flipTimer = true
     var flipTimerX = 75
     var flipTimerY = 175
+    var flipSound = "pling"
     var websocketUrl = "ws://localhost:8080"
 
     private val path
@@ -52,6 +53,7 @@ object FlipperConfig {
         flipTimer = properties.getProperty("flipTimer")?.toBooleanStrictOrNull() ?: flipTimer
         flipTimerX = properties.getProperty("flipTimerX")?.toIntOrNull()?.coerceAtLeast(0) ?: flipTimerX
         flipTimerY = properties.getProperty("flipTimerY")?.toIntOrNull()?.coerceAtLeast(0) ?: flipTimerY
+        flipSound = properties.getProperty("flipSound")?.lowercase() ?: flipSound
         websocketUrl = properties.getProperty("websocketUrl")?.takeIf { it.startsWith("ws://") || it.startsWith("wss://") }
             ?: websocketUrl
     }
@@ -75,6 +77,7 @@ object FlipperConfig {
             setProperty("flipTimer", flipTimer.toString())
             setProperty("flipTimerX", flipTimerX.toString())
             setProperty("flipTimerY", flipTimerY.toString())
+            setProperty("flipSound", flipSound)
             setProperty("websocketUrl", websocketUrl)
         }
         runCatching {
