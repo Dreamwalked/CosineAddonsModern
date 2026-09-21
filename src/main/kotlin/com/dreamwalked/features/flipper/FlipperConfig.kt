@@ -13,7 +13,7 @@ object FlipperConfig {
     var preSniper = true
     var relistPricing = true
     var minProfit1 = 7_000_000.0
-    var minProfitPercent1 = 8.0
+    var minProfitPercent1 = 1.0
     var minProfit2 = 5_000_000.0
     var minProfitPercent2 = 50.0
     var maxAutoOpenCost = Double.MAX_VALUE
