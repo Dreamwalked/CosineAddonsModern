@@ -175,7 +175,7 @@ object FlipperService {
         } else {
             FlipperUtils.formatNumber(FlipperConfig.maxAutoOpenCost)
         }
-        ChatUtils.modMessage("maxAutoOpenCost=$maxCost, buyDelay=${FlipperConfig.buyDelayMs}ms")
+        ChatUtils.modMessage("maxAutoOpenCost=$maxCost")
         ChatUtils.modMessage("websocketUrl=${FlipperConfig.websocketUrl}")
     }
 

@@ -13,7 +13,9 @@
   },
   "client": [
     "AbstractClientPlayerMixin",
+    "ClientPacketListenerCommandMixin",
     "ClientPlayerInteractionManagerMixin",
+    "CommandNodeAccessor",
     "MinecraftClientAccessor"
   ]
 }

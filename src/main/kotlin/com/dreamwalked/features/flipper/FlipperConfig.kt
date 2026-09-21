@@ -17,8 +17,7 @@ object FlipperConfig {
     var minProfit2 = 5_000_000.0
     var minProfitPercent2 = 50.0
     var maxAutoOpenCost = Double.MAX_VALUE
-    var buyDelayMs = 75L
-    var bedSpamDelayMs = 10L
+    var bedSpamDelayMs = 100L
     var flipTimer = true
     var flipTimerX = 75
     var flipTimerY = 175
@@ -47,7 +46,6 @@ object FlipperConfig {
         minProfitPercent2 = properties.getProperty("minProfitPercent2")?.toDoubleOrNull() ?: minProfitPercent2
         maxAutoOpenCost = properties.getProperty("maxAutoOpenCost")?.toDoubleOrNull()?.coerceAtLeast(0.0)
             ?: maxAutoOpenCost
-        buyDelayMs = properties.getProperty("buyDelayMs")?.toLongOrNull()?.coerceIn(0, 5_000) ?: buyDelayMs
         bedSpamDelayMs = properties.getProperty("bedSpamDelayMs")?.toLongOrNull()?.coerceIn(1, 5_000)
             ?: bedSpamDelayMs
         flipTimer = properties.getProperty("flipTimer")?.toBooleanStrictOrNull() ?: flipTimer
@@ -72,7 +70,6 @@ object FlipperConfig {
             setProperty("minProfit2", minProfit2.toString())
             setProperty("minProfitPercent2", minProfitPercent2.toString())
             setProperty("maxAutoOpenCost", maxAutoOpenCost.toString())
-            setProperty("buyDelayMs", buyDelayMs.toString())
             setProperty("bedSpamDelayMs", bedSpamDelayMs.toString())
             setProperty("flipTimer", flipTimer.toString())
             setProperty("flipTimerX", flipTimerX.toString())

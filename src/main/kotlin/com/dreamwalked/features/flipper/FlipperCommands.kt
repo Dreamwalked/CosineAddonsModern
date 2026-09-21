@@ -19,7 +19,7 @@ object FlipperCommands {
                 ChatUtils.modMessage("/cf websocket <ws:// or wss:// URL>")
                 ChatUtils.modMessage("/cf autoopen|autobuy|bed|safety|presniper|relist|fliptimer [true|false]")
                 ChatUtils.modMessage("/cf minprofit1|minprofit2 <coins> <percent>")
-                ChatUtils.modMessage("/cf maxautoopencost <coins>; /cf delay|bedspamdelay <ms>")
+                ChatUtils.modMessage("/cf maxautoopencost <coins>; /cf bedspamdelay <ms>")
                 ChatUtils.modMessage("/cf timerx|timery <pixels>")
                 ChatUtils.modMessage("/cf flipsound <pling|levelup|orb|chime|allay|off>")
                 1
@@ -52,12 +52,6 @@ object FlipperCommands {
                 FlipperConfig.save()
                 ChatUtils.modMessage("Flip timer ${if (value) "§aenabled" else "§cdisabled"}")
             })
-            .then(literal("delay").then(argument("milliseconds", LongArgumentType.longArg(0, 5_000)).executes { context ->
-                FlipperConfig.buyDelayMs = LongArgumentType.getLong(context, "milliseconds")
-                FlipperConfig.save()
-                ChatUtils.modMessage("Buy delay set to ${FlipperConfig.buyDelayMs}ms")
-                1
-            }))
             .then(literal("bedspamdelay")
                 .executes {
                     ChatUtils.modMessage("Bed spam delay is ${FlipperConfig.bedSpamDelayMs}ms")
